@@ -1,0 +1,70 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Kanika & Deepankar//Wedding//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Kanika & Deepankar Wedding
+BEGIN:VEVENT
+UID:kd-wedding-1@kanika-deepankar
+DTSTAMP:20261002T000000Z
+DTSTART:20261210T053000Z
+DTEND:20261210T093000Z
+SUMMARY:Tilak · Kanika & Deepankar's Wedding
+LOCATION:Ramaya Motel & Resort\, Chandesra\, Dewas Road\, Ujjain\, Madhya Pradesh 456006
+DESCRIPTION:Tilak\, Katha & Mehndi — 11:00 AM
+END:VEVENT
+BEGIN:VEVENT
+UID:kd-wedding-2@kanika-deepankar
+DTSTAMP:20261002T000000Z
+DTSTART:20261210T133000Z
+DTEND:20261210T143000Z
+SUMMARY:Sangeet & Ring Ceremony · Kanika & Deepankar's Wedding
+LOCATION:Ramaya Motel & Resort\, Chandesra\, Dewas Road\, Ujjain\, Madhya Pradesh 456006
+DESCRIPTION:7:00 PM
+END:VEVENT
+BEGIN:VEVENT
+UID:kd-wedding-3@kanika-deepankar
+DTSTAMP:20261002T000000Z
+DTSTART:20261210T143000Z
+DTEND:20261210T180000Z
+SUMMARY:Cocktail · Kanika & Deepankar's Wedding
+LOCATION:Ramaya Motel & Resort\, Chandesra\, Dewas Road\, Ujjain\, Madhya Pradesh 456006
+DESCRIPTION:8:00 PM
+END:VEVENT
+BEGIN:VEVENT
+UID:kd-wedding-4@kanika-deepankar
+DTSTAMP:20261002T000000Z
+DTSTART:20261211T043000Z
+DTEND:20261211T073000Z
+SUMMARY:Haldi · Kanika & Deepankar's Wedding
+LOCATION:Ramaya Motel & Resort\, Chandesra\, Dewas Road\, Ujjain\, Madhya Pradesh 456006
+DESCRIPTION:10:00 AM
+END:VEVENT
+BEGIN:VEVENT
+UID:kd-wedding-5@kanika-deepankar
+DTSTAMP:20261002T000000Z
+DTSTART:20261211T083000Z
+DTEND:20261211T103000Z
+SUMMARY:Matri Pooja · Kanika & Deepankar's Wedding
+LOCATION:Ramaya Motel & Resort\, Chandesra\, Dewas Road\, Ujjain\, Madhya Pradesh 456006
+DESCRIPTION:2:00 PM
+END:VEVENT
+BEGIN:VEVENT
+UID:kd-wedding-6@kanika-deepankar
+DTSTAMP:20261002T000000Z
+DTSTART:20261211T143000Z
+DTEND:20261211T160000Z
+SUMMARY:Baraat · Kanika & Deepankar's Wedding
+LOCATION:Ramaya Motel & Resort\, Chandesra\, Dewas Road\, Ujjain\, Madhya Pradesh 456006
+DESCRIPTION:8:00 PM
+END:VEVENT
+BEGIN:VEVENT
+UID:kd-wedding-7@kanika-deepankar
+DTSTAMP:20261002T000000Z
+DTSTART:20261211T160000Z
+DTEND:20261211T180000Z
+SUMMARY:Jaimala & Reception · Kanika & Deepankar's Wedding
+LOCATION:Ramaya Motel & Resort\, Chandesra\, Dewas Road\, Ujjain\, Madhya Pradesh 456006
+DESCRIPTION:To follow after the Baraat
+END:VEVENT
+END:VCALENDAR

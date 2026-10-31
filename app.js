@@ -14,31 +14,59 @@
 
   var SIDE = document.body.getAttribute("data-side") === "groom" ? "groom" : "bride";
 
-  // sides: which invitation shows the event; time/note may differ per side
+  // sides: which invitation shows the function; time/bg may differ per side.
+  // bg = artwork in assets/bg (see .bg-* in styles.css); "ritual" pages use our own art (RITUAL_ART).
   var EVENTS = [
-    { day: 1, sides: ["bride", "groom"], name: "Tilak", sub: "Tilak · Katha · Mehndi", time: "11:00 AM", icon: "thali",
-      accent: "#ef7d12", tint: "#ffe6c7", note: "A morning of blessings, prayers and henna." },
-    { day: 1, sides: ["bride", "groom"], name: "Sangeet & Ring Ceremony", sub: "Followed by Cocktail", time: "7:00 PM", icon: "ring",
-      accent: "#d6336c", tint: "#ffdfe9", note: "An evening of music, dance and the exchange of rings, then raise a glass with us." },
-    { day: 2, sides: ["bride", "groom"], name: "Haldi", time: "10:00 AM", icon: "haldi",
-      accent: "#e09a00", tint: "#fff0b8", note: "Turmeric, laughter and a splash of sunshine." },
-    { day: 2, sides: ["groom"], name: "Matri Pooja", time: "2:00 PM", icon: "kalash",
-      accent: "#c62828", tint: "#ffe0da", note: "Invoking the blessings of the divine mothers and our ancestors." },
-    { day: 2, sides: ["groom"], name: "Baraat", time: "8:00 PM", icon: "dhol",
-      accent: "#00897b", tint: "#d4f3ee", note: "The groom's grand procession — come dance along to the dhol!" },
-    { day: 2, sides: ["bride", "groom"], name: "Jaimala & Reception", time: { bride: "8:00 PM onwards", groom: "To follow" }, icon: "garland",
-      accent: "#8c1230", tint: "#fde0e8", note: "The exchange of garlands, followed by the reception." }
+    { id: "tilak", day: 1, sides: ["bride", "groom"], name: "Tilak", sub: "Tilak · Katha · Mehndi", time: "11:00 AM",
+      bg: { bride: "dhol", groom: "ritual" }, art: "thali",
+      accent: "#ef7d12", note: "A morning of blessings, prayers and henna." },
+    { id: "sangeet", day: 1, sides: ["bride", "groom"], name: "Sangeet & Ring Ceremony", sub: "Followed by Cocktail", time: "7:00 PM",
+      bg: "ring", accent: "#d6336c", note: "An evening of music, dance and the exchange of rings, then raise a glass with us." },
+    { id: "haldi", day: 2, sides: ["bride", "groom"], name: "Haldi", time: "10:00 AM",
+      bg: "haldi", accent: "#e09a00", note: "Turmeric, laughter and a splash of sunshine." },
+    { id: "matri", day: 2, sides: ["groom"], name: "Matri Pooja", time: "2:00 PM",
+      bg: "ritual", art: "kalash", accent: "#c62828", note: "Invoking the blessings of the divine mothers and our ancestors." },
+    { id: "baraat", day: 2, sides: ["groom"], name: "Baraat", time: "8:00 PM",
+      bg: "dhol", accent: "#00897b", note: "The groom's grand procession — come dance along to the dhol!" },
+    { id: "reception", day: 2, sides: ["bride", "groom"], name: "Jaimala & Reception", time: { bride: "8:00 PM onwards", groom: "To follow" },
+      bg: "jaimala", accent: "#8c1230", note: "The exchange of garlands, followed by the reception." }
   ];
+
+  // illustrations for functions that have no artwork of their own
+  var RITUAL_ART = {
+    thali:
+      '<svg viewBox="0 0 300 170" aria-hidden="true"><defs><radialGradient id="pl" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#ffe9a8"/><stop offset=".7" stop-color="#e9b44c"/><stop offset="1" stop-color="#b8811f"/></radialGradient></defs>' +
+      '<ellipse cx="150" cy="150" rx="140" ry="16" fill="#8c1230" opacity=".12"/>' +
+      '<ellipse cx="150" cy="128" rx="138" ry="36" fill="url(#pl)" stroke="#9c6b12" stroke-width="2"/><ellipse cx="150" cy="124" rx="112" ry="25" fill="none" stroke="#fff3c7" stroke-width="2" stroke-dasharray="3 5"/>' +
+      '<g><ellipse cx="72" cy="122" rx="22" ry="8" fill="#c62828"/><ellipse cx="72" cy="119" rx="17" ry="5" fill="#e53935"/></g>' +
+      '<g><ellipse cx="228" cy="122" rx="22" ry="8" fill="#d99000"/><ellipse cx="228" cy="119" rx="17" ry="5" fill="#ffc107"/></g>' +
+      '<g><ellipse cx="112" cy="138" rx="16" ry="6" fill="#e8e2d2"/><ellipse cx="190" cy="138" rx="16" ry="6" fill="#fff"/></g>' +
+      '<path d="M128 112q22 18 44 0z" fill="#b8811f" stroke="#7c5a17" stroke-width="1.5"/><path d="M150 108c-9-9-4-22 0-32 4 10 9 23 0 32z" fill="#ff9800"/><path d="M150 106c-4-5-2-12 0-17 2 5 4 12 0 17z" fill="#fff3a0"/>' +
+      '<g fill="#f5841f" stroke="#cf5a0e" stroke-width="1.5" stroke-dasharray="1.5 1.5"><circle cx="96" cy="110" r="7"/><circle cx="206" cy="110" r="7"/><circle cx="130" cy="140" r="6"/><circle cx="172" cy="140" r="6"/></g>' +
+      '<g fill="#ffbe1a" stroke="#d99000" stroke-width="1.5" stroke-dasharray="1.5 1.5"><circle cx="40" cy="128" r="6"/><circle cx="260" cy="128" r="6"/><circle cx="150" cy="146" r="5"/></g></svg>',
+    kalash:
+      '<svg viewBox="0 0 300 200" aria-hidden="true"><defs><linearGradient id="kl" x1="0" x2="1"><stop offset="0" stop-color="#b8811f"/><stop offset=".45" stop-color="#ffd877"/><stop offset="1" stop-color="#b8811f"/></linearGradient></defs>' +
+      '<ellipse cx="150" cy="186" rx="130" ry="12" fill="#8c1230" opacity=".12"/>' +
+      '<g fill="#f5841f"><circle cx="40" cy="176" r="9"/><circle cx="260" cy="176" r="9"/></g>' +
+      '<g><path d="M22 172q18 14 36 0z" fill="#b8811f"/><path d="M40 168c-6-6-3-14 0-20 3 6 6 14 0 20z" fill="#ff9800"/><path d="M242 172q18 14 36 0z" fill="#b8811f"/><path d="M260 168c-6-6-3-14 0-20 3 6 6 14 0 20z" fill="#ff9800"/></g>' +
+      '<path d="M108 104q-26 30-12 56 14 24 54 24t54-24q14-26-12-56z" fill="url(#kl)" stroke="#9c6b12" stroke-width="2"/>' +
+      '<path d="M100 122q50 16 100 0" fill="none" stroke="#c62828" stroke-width="5"/><path d="M100 130q50 16 100 0" fill="none" stroke="#ffbe1a" stroke-width="3"/>' +
+      '<g fill="#c62828"><circle cx="150" cy="152" r="4"/><circle cx="136" cy="150" r="2.5"/><circle cx="164" cy="150" r="2.5"/></g>' +
+      '<path d="M116 104h68v-12h-68z" fill="#e9b44c" stroke="#9c6b12" stroke-width="2"/><path d="M110 92h80" stroke="#9c6b12" stroke-width="3" stroke-linecap="round"/>' +
+      '<g fill="#2e8b4e" stroke="#1d6b3c" stroke-width="1.5"><path d="M150 88c-20-10-42-12-62-30 24-2 46 8 62 30z"/><path d="M150 88c20-10 42-12 62-30-24-2-46 8-62 30z"/><path d="M150 86c-12-14-30-24-40-44 20 4 34 20 40 44z"/><path d="M150 86c12-14 30-24 40-44-20 4-34 20-40 44z"/></g>' +
+      '<ellipse cx="150" cy="64" rx="20" ry="25" fill="#8a5a2b" stroke="#5e3b18" stroke-width="2"/><path d="M150 40c-4-8-1-14 3-18" fill="none" stroke="#5e3b18" stroke-width="2"/>' +
+      '<path d="M128 70q22 14 44 0l4 14q-26 12-52 0z" fill="#c62828"/><path d="M126 84q24 10 48 0" fill="none" stroke="#ffbe1a" stroke-width="2"/></svg>'
+  };
   var DAYS = {
     1: { pill: "Day One", date: "Thursday, 10 December 2026" },
     2: { pill: "Day Two", date: "Friday, 11 December 2026" }
   };
 
   var CONTACTS = {
-    kf: { who: "Kanika's Father", accent: "#d6336c", nums: ["+919479873683", "+918770134077"] },
-    ku: { who: "Kanika's Uncle", accent: "#d6336c", nums: ["+919644455666", "+917000816022"] },
-    df: { who: "Deepankar's Father", accent: "#ef7d12", nums: ["+918744045556", "+916395489890"] },
-    db: { who: "Deepankar's Brother", accent: "#ef7d12", nums: ["+918744865556", "+919654195556"] }
+    kf: { who: "Kanika's Father", accent: "#d6336c", nums: ["+919479873683"] },
+    ku: { who: "Kanika's Uncle", accent: "#d6336c", nums: ["+919644455666"] },
+    df: { who: "Deepankar's Father", accent: "#ef7d12", nums: ["+918744045556"] },
+    db: { who: "Deepankar's Brother", accent: "#ef7d12", nums: ["+918744865556"] }
   };
 
   var SIDES = {
@@ -101,6 +129,10 @@
     $("#name").value = guest;
   }
 
+  // ?print=1 renders every section as a 9:16 page for the PDF (tools/render.sh)
+  var PRINT = params.get("print") === "1";
+  if (PRINT) { document.documentElement.classList.add("pm"); document.body.classList.remove("locked"); reduceMotion = true; }
+
   /* ---------------- Gate ---------------- */
   var gate = $("#gate");
   function openGate() {
@@ -152,21 +184,20 @@
   }
   tick();
 
-  /* ---------------- Events ---------------- */
-  var html = "";
-  [1, 2].forEach(function (d) {
-    html += '<div class="day"><div class="day-head reveal"><span class="day-pill">' + DAYS[d].pill + '</span><span class="day-date">' + DAYS[d].date + '</span></div><div class="timeline">';
-    EVENTS.filter(function (e) { return e.day === d && e.sides.indexOf(SIDE) > -1; }).forEach(function (ev) {
-      var time = typeof ev.time === "object" ? ev.time[SIDE] : ev.time;
-      html += '<article class="event reveal" style="--accent:' + ev.accent + ";--tint:" + ev.tint + '">' +
-        '<div class="icon"><svg><use href="#i-' + ev.icon + '"/></svg></div><div class="card">' +
-        '<span class="time">' + esc(time) + "</span><h3>" + esc(ev.name) + "</h3>" +
-        (ev.sub ? '<p class="sub">' + esc(ev.sub) + "</p>" : "") +
-        "<p>" + esc(ev.note) + "</p></div></article>";
-    });
-    html += "</div></div>";
-  });
-  $("#eventDays").innerHTML = html;
+  /* ---------------- Functions: one full page each ---------------- */
+  function perSide(v) { return v && typeof v === "object" ? v[SIDE] : v; }
+  $("#events").innerHTML = EVENTS.filter(function (ev) { return ev.sides.indexOf(SIDE) > -1; }).map(function (ev) {
+    var bg = perSide(ev.bg), fit = bg === "dhol" ? "fit-width" : "fit-cover";
+    return '<section class="fn ' + fit + " bg-" + bg + '" id="fn-' + ev.id + '" style="--accent:' + ev.accent + '">' +
+      '<div class="fn-text reveal">' +
+      '<span class="fn-day">' + DAYS[ev.day].pill + '</span><span class="fn-date">' + DAYS[ev.day].date + "</span>" +
+      '<h2 class="fn-name' + (ev.name.length > 12 ? " long" : "") + '">' + esc(ev.name) + "</h2>" +
+      (ev.sub ? '<p class="fn-sub">' + esc(ev.sub) + "</p>" : "") +
+      '<span class="fn-time">' + esc(perSide(ev.time)) + "</span>" +
+      '<p class="fn-note">' + esc(ev.note) + "</p></div>" +
+      (bg === "ritual" ? '<div class="fn-art art-' + ev.art + '">' + RITUAL_ART[ev.art] + "</div>" : "") +
+      "</section>";
+  }).join("");
 
   /* ---------------- Contacts ---------------- */
   function prettyNum(n) { var d = n.replace(/\D/g, "").slice(-10); return "+91 " + d.slice(0, 5) + " " + d.slice(5); }
@@ -191,18 +222,6 @@
     f.src = "https://maps.google.com/maps?q=" + encodeURIComponent(CONFIG.venueQuery) + "&z=13&output=embed";
     mapEl.appendChild(f);
   }
-
-  /* ---------------- Share ---------------- */
-  var siteUrl = location.origin + location.pathname.replace(/index\.html$/, "");
-  var shareText = "🌼 You're invited! 🌼\n\n" + S.couple + "'s Wedding\n10–11 December 2026 · Ramaya Resort, Ujjain\n\nView the invitation & RSVP: " + siteUrl;
-  var waBtn = $("#shareWa");
-  waBtn.href = "https://wa.me/?text=" + encodeURIComponent(shareText);
-  waBtn.addEventListener("click", function (e) {
-    if (navigator.share && /Mobi|Android|iPhone/i.test(navigator.userAgent)) {
-      e.preventDefault();
-      navigator.share({ title: S.couple + " · Wedding Invitation", text: "🌼 " + S.couple + "'s Wedding · 10–11 Dec 2026 · Ramaya Resort, Ujjain", url: siteUrl }).catch(function () {});
-    }
-  });
 
   /* ---------------- RSVP ---------------- */
   var form = $("#rsvpForm"), card = $("#rsvpCard"), errEl = $("#formError");
@@ -319,7 +338,7 @@
     if (Date.now() < lockUntil) return; // let the tapped tab stay lit while smooth-scrolling
     var probe = window.innerHeight * 0.4, current = "";
     navSections.forEach(function (sec) { if (sec && sec.getBoundingClientRect().top <= probe) current = sec.id; });
-    if (window.innerHeight + y >= document.documentElement.scrollHeight - 4) current = "keepsake";
+    if (window.innerHeight + y >= document.documentElement.scrollHeight - 4) current = "contact";
     setActive(current);
   }
   window.addEventListener("scroll", onScroll, { passive: true }); onScroll();

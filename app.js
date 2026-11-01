@@ -14,59 +14,43 @@
 
   var SIDE = document.body.getAttribute("data-side") === "groom" ? "groom" : "bride";
 
-  // sides: which invitation shows the function; time/bg may differ per side.
-  // bg = artwork in assets/bg (see .bg-* in styles.css); "ritual" pages use our own art (RITUAL_ART).
-  var EVENTS = [
-    { id: "tilak", day: 1, sides: ["bride", "groom"], name: "Tilak", sub: "Tilak · Katha · Mehndi", time: "11:00 AM",
-      bg: { bride: "dhol", groom: "ritual" }, art: "thali",
-      accent: "#ef7d12", note: "A morning of blessings, prayers and henna." },
-    { id: "sangeet", day: 1, sides: ["bride", "groom"], name: "Sangeet & Ring Ceremony", sub: "Followed by Cocktail", time: "7:00 PM",
-      bg: "ring", accent: "#d6336c", note: "An evening of music, dance and the exchange of rings, then raise a glass with us." },
-    { id: "haldi", day: 2, sides: ["bride", "groom"], name: "Haldi", time: "10:00 AM",
-      bg: "haldi", accent: "#e09a00", note: "Turmeric, laughter and a splash of sunshine." },
-    { id: "matri", day: 2, sides: ["groom"], name: "Matri Pooja", time: "2:00 PM",
-      bg: "ritual", art: "kalash", accent: "#c62828", note: "Invoking the blessings of the divine mothers and our ancestors." },
-    { id: "baraat", day: 2, sides: ["groom"], name: "Baraat", time: "8:00 PM",
-      bg: "dhol", accent: "#00897b", note: "The groom's grand procession — come dance along to the dhol!" },
-    { id: "reception", day: 2, sides: ["bride", "groom"], name: "Jaimala & Reception", time: { bride: "8:00 PM onwards", groom: "To follow" },
-      bg: "jaimala", accent: "#8c1230", note: "The exchange of garlands, followed by the reception." }
-  ];
-
-  // illustrations for functions that have no artwork of their own
-  var RITUAL_ART = {
-    thali:
-      '<svg viewBox="0 0 300 170" aria-hidden="true"><defs><radialGradient id="pl" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#ffe9a8"/><stop offset=".7" stop-color="#e9b44c"/><stop offset="1" stop-color="#b8811f"/></radialGradient></defs>' +
-      '<ellipse cx="150" cy="150" rx="140" ry="16" fill="#8c1230" opacity=".12"/>' +
-      '<ellipse cx="150" cy="128" rx="138" ry="36" fill="url(#pl)" stroke="#9c6b12" stroke-width="2"/><ellipse cx="150" cy="124" rx="112" ry="25" fill="none" stroke="#fff3c7" stroke-width="2" stroke-dasharray="3 5"/>' +
-      '<g><ellipse cx="72" cy="122" rx="22" ry="8" fill="#c62828"/><ellipse cx="72" cy="119" rx="17" ry="5" fill="#e53935"/></g>' +
-      '<g><ellipse cx="228" cy="122" rx="22" ry="8" fill="#d99000"/><ellipse cx="228" cy="119" rx="17" ry="5" fill="#ffc107"/></g>' +
-      '<g><ellipse cx="112" cy="138" rx="16" ry="6" fill="#e8e2d2"/><ellipse cx="190" cy="138" rx="16" ry="6" fill="#fff"/></g>' +
-      '<path d="M128 112q22 18 44 0z" fill="#b8811f" stroke="#7c5a17" stroke-width="1.5"/><path d="M150 108c-9-9-4-22 0-32 4 10 9 23 0 32z" fill="#ff9800"/><path d="M150 106c-4-5-2-12 0-17 2 5 4 12 0 17z" fill="#fff3a0"/>' +
-      '<g fill="#f5841f" stroke="#cf5a0e" stroke-width="1.5" stroke-dasharray="1.5 1.5"><circle cx="96" cy="110" r="7"/><circle cx="206" cy="110" r="7"/><circle cx="130" cy="140" r="6"/><circle cx="172" cy="140" r="6"/></g>' +
-      '<g fill="#ffbe1a" stroke="#d99000" stroke-width="1.5" stroke-dasharray="1.5 1.5"><circle cx="40" cy="128" r="6"/><circle cx="260" cy="128" r="6"/><circle cx="150" cy="146" r="5"/></g></svg>',
-    kalash:
-      '<svg viewBox="0 0 300 200" aria-hidden="true"><defs><linearGradient id="kl" x1="0" x2="1"><stop offset="0" stop-color="#b8811f"/><stop offset=".45" stop-color="#ffd877"/><stop offset="1" stop-color="#b8811f"/></linearGradient></defs>' +
-      '<ellipse cx="150" cy="186" rx="130" ry="12" fill="#8c1230" opacity=".12"/>' +
-      '<g fill="#f5841f"><circle cx="40" cy="176" r="9"/><circle cx="260" cy="176" r="9"/></g>' +
-      '<g><path d="M22 172q18 14 36 0z" fill="#b8811f"/><path d="M40 168c-6-6-3-14 0-20 3 6 6 14 0 20z" fill="#ff9800"/><path d="M242 172q18 14 36 0z" fill="#b8811f"/><path d="M260 168c-6-6-3-14 0-20 3 6 6 14 0 20z" fill="#ff9800"/></g>' +
-      '<path d="M108 104q-26 30-12 56 14 24 54 24t54-24q14-26-12-56z" fill="url(#kl)" stroke="#9c6b12" stroke-width="2"/>' +
-      '<path d="M100 122q50 16 100 0" fill="none" stroke="#c62828" stroke-width="5"/><path d="M100 130q50 16 100 0" fill="none" stroke="#ffbe1a" stroke-width="3"/>' +
-      '<g fill="#c62828"><circle cx="150" cy="152" r="4"/><circle cx="136" cy="150" r="2.5"/><circle cx="164" cy="150" r="2.5"/></g>' +
-      '<path d="M116 104h68v-12h-68z" fill="#e9b44c" stroke="#9c6b12" stroke-width="2"/><path d="M110 92h80" stroke="#9c6b12" stroke-width="3" stroke-linecap="round"/>' +
-      '<g fill="#2e8b4e" stroke="#1d6b3c" stroke-width="1.5"><path d="M150 88c-20-10-42-12-62-30 24-2 46 8 62 30z"/><path d="M150 88c20-10 42-12 62-30-24-2-46 8-62 30z"/><path d="M150 86c-12-14-30-24-40-44 20 4 34 20 40 44z"/><path d="M150 86c12-14 30-24 40-44-20 4-34 20-40 44z"/></g>' +
-      '<ellipse cx="150" cy="64" rx="20" ry="25" fill="#8a5a2b" stroke="#5e3b18" stroke-width="2"/><path d="M150 40c-4-8-1-14 3-18" fill="none" stroke="#5e3b18" stroke-width="2"/>' +
-      '<path d="M128 70q22 14 44 0l4 14q-26 12-52 0z" fill="#c62828"/><path d="M126 84q24 10 48 0" fill="none" stroke="#ffbe1a" stroke-width="2"/></svg>'
+  // one entry per function; time may differ per side
+  var EVENTS = {
+    tilak: { day: 1, name: "Tilak", sub: "Tilak · Katha · Mehndi", time: "11:00 AM", accent: "#5e8b6b",
+      note: "A morning of blessings, prayers and henna." },
+    sangeet: { day: 1, name: "Sangeet & Ring Ceremony", sub: "Followed by Cocktail", time: "7:00 PM", accent: "#4f7fa6",
+      note: "An evening of music, dance and the exchange of rings, then raise a glass with us." },
+    haldi: { day: 2, name: "Haldi", time: "10:00 AM", accent: "#c08a0c", note: "Turmeric, laughter and a splash of sunshine." },
+    matri: { day: 2, name: "Matri Pooja", time: "2:00 PM", accent: "#a8455a", note: "Seeking the blessings of the divine mothers and our ancestors." },
+    baraat: { day: 2, name: "Baraat", time: "8:00 PM", accent: "#b0354f", note: "The groom's grand procession. Come dance along to the dhol!" },
+    reception: { day: 2, name: "Jaimala & Reception", time: { bride: "8:00 PM onwards", groom: "To follow" }, accent: "#b0354f",
+      note: "The exchange of garlands, followed by the reception." }
+  };
+  // one full page per entry: illustration (assets/art) + the functions on it
+  var PAGES = {
+    bride: [
+      { id: "tilak", art: "mehendi", hi: "॥ तिलक ॥", ev: ["tilak"] },
+      { id: "sangeet", art: "sangeet", hi: "॥ संगीत एवं सगाई ॥", ev: ["sangeet"] },
+      { id: "haldi", art: "haldi", hi: "॥ हल्दी ॥", ev: ["haldi"] },
+      { id: "reception", art: "wedding", hi: "॥ जयमाला एवं स्वागत ॥", ev: ["reception"] }
+    ],
+    groom: [
+      { id: "tilak", art: "mehendi", hi: "॥ तिलक एवं मातृ पूजा ॥", ev: ["tilak", "matri"] },
+      { id: "sangeet", art: "sangeet", hi: "॥ संगीत एवं सगाई ॥", ev: ["sangeet"] },
+      { id: "haldi", art: "haldi", hi: "॥ हल्दी ॥", ev: ["haldi"] },
+      { id: "reception", art: "wedding", hi: "॥ बारात एवं जयमाला ॥", ev: ["baraat", "reception"] }
+    ]
   };
   var DAYS = {
-    1: { pill: "Day One", date: "Thursday, 10 December 2026" },
-    2: { pill: "Day Two", date: "Friday, 11 December 2026" }
+    1: { pill: "Day One", date: "Thursday, 10 December 2026", short: "Thu, 10 Dec" },
+    2: { pill: "Day Two", date: "Friday, 11 December 2026", short: "Fri, 11 Dec" }
   };
 
   var CONTACTS = {
-    kf: { who: "Kanika's Father", accent: "#d6336c", nums: ["+919479873683"] },
-    ku: { who: "Kanika's Uncle", accent: "#d6336c", nums: ["+919644455666"] },
-    df: { who: "Deepankar's Father", accent: "#ef7d12", nums: ["+918744045556"] },
-    db: { who: "Deepankar's Brother", accent: "#ef7d12", nums: ["+918744865556"] }
+    kf: { who: "Kanika's Father", accent: "#c4687e", nums: ["+919479873683"] },
+    ku: { who: "Kanika's Uncle", accent: "#c4687e", nums: ["+919644455666"] },
+    df: { who: "Deepankar's Father", accent: "#c98576", nums: ["+918744045556"] },
+    db: { who: "Deepankar's Brother", accent: "#c98576", nums: ["+918744865556"] }
   };
 
   var SIDES = {
@@ -92,25 +76,25 @@
     var count = 18, gap = W / count;
     for (var i = 0; i < count; i++) {
       var x = gap / 2 + i * gap, y0 = ropeY(x), n = cfg.len[i % 6], orange = i % 2 === 0;
-      var c1 = orange ? "#f5841f" : "#ffbe1a", c2 = orange ? "#cf5a0e" : "#d99000";
+      var c1 = orange ? "#f2a9b6" : "#fff4ee", c2 = orange ? "#d0798a" : "#e2b9ae";
       var g = '<g class="strand" style="animation-delay:-' + ((i * 0.37) % 4.5).toFixed(2) + 's">';
-      g += '<path d="M' + x + " " + y0 + "V" + (y0 + n * 9.4 + 6) + '" stroke="#8a5a2b" stroke-width=".8"/>';
+      g += '<path d="M' + x + " " + y0 + "V" + (y0 + n * 9.4 + 6) + '" stroke="#b88a7e" stroke-width=".8"/>';
       for (var k = 0; k < n; k++) {
         var cy = y0 + 8 + k * 9.4;
         g += '<circle cx="' + x + '" cy="' + cy + '" r="5.1" fill="' + c1 + '" stroke="' + c2 + '" stroke-width="1.6" stroke-dasharray="1.2 1.1"/>';
         g += '<circle cx="' + x + '" cy="' + cy + '" r="1.5" fill="' + c2 + '" opacity=".7"/>';
       }
       var ey = y0 + 8 + n * 9.4;
-      g += '<circle cx="' + x + '" cy="' + (ey - 2) + '" r="2.4" fill="#d6336c"/>';
-      g += '<path d="M' + (x - 3.2) + " " + (ey + 6) + "Q" + x + " " + (ey - 3) + " " + (x + 3.2) + " " + (ey + 6) + 'z" fill="#f0c35e" stroke="#9c6b12" stroke-width=".6"/>';
+      g += '<circle cx="' + x + '" cy="' + (ey - 2) + '" r="2.4" fill="#c06a7d"/>';
+      g += '<path d="M' + (x - 3.2) + " " + (ey + 6) + "Q" + x + " " + (ey - 3) + " " + (x + 3.2) + " " + (ey + 6) + 'z" fill="#f3cfc4" stroke="#b07a6c" stroke-width=".6"/>';
       parts.push(g + "</g>");
     }
-    parts.push('<path d="M0 5Q' + W / 2 + " 23 " + W + ' 5" fill="none" stroke="#8a5a2b" stroke-width="2.2"/>');
+    parts.push('<path d="M0 5Q' + W / 2 + " 23 " + W + ' 5" fill="none" stroke="#b88a7e" stroke-width="2.2"/>');
     for (var j = 0; j <= 34; j++) {
-      var lx = j * (W / 34), ly = ropeY(lx) + 1, col = j % 2 ? "#2e8b4e" : "#1d6b3c", tilt = (j % 2 ? 1 : -1) * 6;
+      var lx = j * (W / 34), ly = ropeY(lx) + 1, col = j % 2 ? "#9db89a" : "#7d9c7a", tilt = (j % 2 ? 1 : -1) * 6;
       var rot = ' transform="rotate(' + tilt + " " + lx + " " + ly + ')"';
       parts.push("<path" + rot + ' d="M' + lx + " " + ly + "C" + (lx - 5) + " " + (ly + 7) + " " + (lx - 3) + " " + (ly + 17) + " " + lx + " " + (ly + 22) + "C" + (lx + 3) + " " + (ly + 17) + " " + (lx + 5) + " " + (ly + 7) + " " + lx + " " + ly + 'z" fill="' + col + '"/>');
-      parts.push("<path" + rot + ' d="M' + lx + " " + (ly + 2) + "V" + (ly + 19) + '" stroke="#b6dca0" stroke-width=".5" opacity=".7"/>');
+      parts.push("<path" + rot + ' d="M' + lx + " " + (ly + 2) + "V" + (ly + 19) + '" stroke="#e3efd9" stroke-width=".5" opacity=".7"/>');
     }
     parts.push("</svg>");
     return parts.join("");
@@ -132,6 +116,8 @@
   // ?print=1 renders every section as a 9:16 page for the PDF (tools/render.sh)
   var PRINT = params.get("print") === "1";
   if (PRINT) { document.documentElement.classList.add("pm"); document.body.classList.remove("locked"); reduceMotion = true; }
+  // balanced headings are measured before the web fonts arrive; re-measure once they have
+  if (document.fonts) document.fonts.ready.then(function () { var h = document.documentElement; h.classList.add("relayout"); void h.offsetHeight; h.classList.remove("relayout"); });
 
   /* ---------------- Gate ---------------- */
   var gate = $("#gate");
@@ -147,7 +133,7 @@
 
   /* ---------------- Petals ---------------- */
   var petalBox = $("#petals");
-  var PETAL_COLORS = ["#f5841f", "#ffbe1a", "#e8436f", "#ff8a5c", "#ffd24d"];
+  var PETAL_COLORS = ["#f4b6c2", "#f9d5dc", "#eaa0b0", "#fbe3e8", "#f2c2b3"];
   function spawnPetal(opts) {
     if (reduceMotion) return;
     var p = document.createElement("span"), size = 8 + Math.random() * 9;
@@ -186,17 +172,26 @@
 
   /* ---------------- Functions: one full page each ---------------- */
   function perSide(v) { return v && typeof v === "object" ? v[SIDE] : v; }
-  $("#events").innerHTML = EVENTS.filter(function (ev) { return ev.sides.indexOf(SIDE) > -1; }).map(function (ev) {
-    var bg = perSide(ev.bg), fit = bg === "dhol" ? "fit-width" : "fit-cover";
-    return '<section class="fn ' + fit + " bg-" + bg + '" id="fn-' + ev.id + '" style="--accent:' + ev.accent + '">' +
-      '<div class="fn-text reveal">' +
-      '<span class="fn-day">' + DAYS[ev.day].pill + '</span><span class="fn-date">' + DAYS[ev.day].date + "</span>" +
-      '<h2 class="fn-name' + (ev.name.length > 12 ? " long" : "") + '">' + esc(ev.name) + "</h2>" +
-      (ev.sub ? '<p class="fn-sub">' + esc(ev.sub) + "</p>" : "") +
-      '<span class="fn-time">' + esc(perSide(ev.time)) + "</span>" +
-      '<p class="fn-note">' + esc(ev.note) + "</p></div>" +
-      (bg === "ritual" ? '<div class="fn-art art-' + ev.art + '">' + RITUAL_ART[ev.art] + "</div>" : "") +
-      "</section>";
+  var BASE = document.body.getAttribute("data-base") || "";
+  function dayHtml(d) { return '<span class="fn-day">' + DAYS[d].pill + '</span><span class="fn-date">' + DAYS[d].date + "</span>"; }
+  $("#events").innerHTML = PAGES[SIDE].map(function (pg, n) {
+    var evs = pg.ev.map(function (k) { return EVENTS[k]; });
+    var oneDay = evs.every(function (e) { return e.day === evs[0].day; });
+    var body = evs.map(function (ev, i) {
+      return '<div class="fn-ev" style="--accent:' + ev.accent + '">' + (i ? '<svg class="fn-split" aria-hidden="true"><use href="#ornament"/></svg>' : "") +
+        (oneDay ? "" : '<span class="fn-day">' + DAYS[ev.day].pill + " · " + DAYS[ev.day].short + "</span>") +
+        '<h2 class="fn-name' + (ev.name.length > 12 ? " long" : "") + '">' + esc(ev.name) + "</h2>" +
+        (ev.sub ? '<p class="fn-sub">' + esc(ev.sub) + "</p>" : "") +
+        '<span class="fn-time">' + esc(perSide(ev.time)) + "</span>" +
+        '<p class="fn-note">' + esc(ev.note) + "</p></div>";
+    }).join("");
+    return '<section class="fn' + (evs.length > 1 ? " two" : "") + (evs[0].name.length > 12 ? " longname" : "") + (n % 2 ? " flip" : "") + '" id="fn-' + pg.id + '">' +
+      '<img class="fn-rose top" src="' + BASE + 'assets/art/roses.webp" alt="" aria-hidden="true" />' +
+      '<img class="fn-rose bot" src="' + BASE + 'assets/art/roses.webp" alt="" aria-hidden="true" />' +
+      '<img class="fn-petal p1" src="' + BASE + 'assets/art/petal1.webp" alt="" aria-hidden="true" />' +
+      '<img class="fn-petal p2" src="' + BASE + 'assets/art/petal2.webp" alt="" aria-hidden="true" />' +
+      '<div class="fn-text reveal"><p class="fn-hi">' + pg.hi + "</p>" + (oneDay ? dayHtml(evs[0].day) : "") +
+      '<img class="fn-art" src="' + BASE + "assets/art/" + pg.art + '.webp" alt="" />' + body + "</div></section>";
   }).join("");
 
   /* ---------------- Contacts ---------------- */

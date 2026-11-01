@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Great+Vibes&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css?v=202611011423" />
+  <link rel="stylesheet" href="../styles.css?v=202611011522" />
   <noscript><style>.gate{display:none}.reveal{opacity:1;transform:none}body.locked{overflow:auto;height:auto}</style></noscript>
 </head>
 <body class="locked" data-side="groom" data-base="../">
@@ -131,8 +131,15 @@
     </div>
   </section>
 
-  <!-- ============ FUNCTIONS — one full page each, rendered by app.js ============ -->
-  <div id="events"></div>
+  <!-- ============ FUNCTIONS — timeline on the web, one page each in the PDF (app.js) ============ -->
+  <section id="events" class="tl-sec">
+    <div class="reveal">
+      <p class="eyebrow">The Celebrations</p>
+      <h2 class="title">Wedding Festivities</h2>
+    </div>
+    <div class="tl" id="timeline"></div>
+  </section>
+  <div id="pages"></div>
 
   <!-- ============ VENUE ============ -->
   <section id="venue">
@@ -255,6 +262,6 @@
   <a href="../assets/Deepankar-Kanika-Wedding-Invitation.pdf" download><svg><use href="#u-down" /></svg>PDF</a>
 </nav>
 
-<script src="../app.js?v=202611011423"></script>
+<script src="../app.js?v=202611011522"></script>
 </body>
 </html>

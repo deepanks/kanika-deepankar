@@ -16,17 +16,22 @@
 
   // one entry per function; time may differ per side
   var EVENTS = {
-    tilak: { day: 1, name: "Tilak", sub: "Tilak · Katha · Mehndi", time: "11:00 AM", accent: "#5e8b6b",
+    tilak: { day: 1, hi: "॥ तिलक ॥", name: "Tilak", sub: "Tilak · Katha · Mehndi", time: "11:00 AM", accent: "#5e8b6b",
       note: "A morning of blessings, prayers and henna." },
-    sangeet: { day: 1, name: "Sangeet & Ring Ceremony", sub: "Followed by Cocktail", time: "7:00 PM", accent: "#4f7fa6",
+    sangeet: { day: 1, hi: "॥ संगीत एवं सगाई ॥", name: "Sangeet & Ring Ceremony", sub: "Followed by Cocktail", time: "7:00 PM", accent: "#4f7fa6",
       note: "An evening of music, dance and the exchange of rings, then raise a glass with us." },
-    haldi: { day: 2, name: "Haldi", time: "10:00 AM", accent: "#c08a0c", note: "Turmeric, laughter and a splash of sunshine." },
-    matri: { day: 2, name: "Matri Pooja", time: "2:00 PM", accent: "#a8455a", note: "Seeking the blessings of the divine mothers and our ancestors." },
-    baraat: { day: 2, name: "Baraat", time: "8:00 PM", accent: "#b0354f", note: "The groom's grand procession. Come dance along to the dhol!" },
-    reception: { day: 2, name: "Jaimala & Reception", time: { bride: "8:00 PM onwards", groom: "To follow" }, accent: "#b0354f",
+    haldi: { day: 2, hi: "॥ हल्दी ॥", name: "Haldi", time: "10:00 AM", accent: "#c08a0c", note: "Turmeric, laughter and a splash of sunshine." },
+    matri: { day: 2, hi: "॥ मातृ पूजा ॥", name: "Matri Pooja", time: "2:00 PM", accent: "#a8455a", note: "Seeking the blessings of the divine mothers and our ancestors." },
+    baraat: { day: 2, hi: "॥ बारात ॥", name: "Baraat", time: "8:00 PM", accent: "#b0354f", note: "The groom's grand procession. Come dance along to the dhol!" },
+    reception: { day: 2, hi: "॥ जयमाला एवं स्वागत ॥", name: "Jaimala & Reception", time: { bride: "8:00 PM onwards", groom: "To follow" }, accent: "#b0354f",
       note: "The exchange of garlands, followed by the reception." }
   };
-  // one full page per entry: illustration (assets/art) + the functions on it
+  // web: all functions on one timeline, illustration and details alternating sides (art: null = small name seal)
+  var TIMELINE = {
+    bride: [["tilak", "mehendi"], ["sangeet", "sangeet"], ["haldi", "haldi"], ["reception", "wedding"]],
+    groom: [["tilak", "mehendi"], ["sangeet", "sangeet"], ["haldi", "haldi"], ["matri", null], ["baraat", null], ["reception", "wedding"]]
+  };
+  // PDF / print: one full page per entry, illustration (assets/art) + the functions on it
   var PAGES = {
     bride: [
       { id: "tilak", art: "mehendi", hi: "॥ तिलक ॥", ev: ["tilak"] },
@@ -170,29 +175,50 @@
   }
   tick();
 
-  /* ---------------- Functions: one full page each ---------------- */
+  /* ---------------- Functions ---------------- */
   function perSide(v) { return v && typeof v === "object" ? v[SIDE] : v; }
   var BASE = document.body.getAttribute("data-base") || "";
-  function dayHtml(d) { return '<span class="fn-day">' + DAYS[d].pill + '</span><span class="fn-date">' + DAYS[d].date + "</span>"; }
-  $("#events").innerHTML = PAGES[SIDE].map(function (pg, n) {
-    var evs = pg.ev.map(function (k) { return EVENTS[k]; });
-    var oneDay = evs.every(function (e) { return e.day === evs[0].day; });
-    var body = evs.map(function (ev, i) {
-      return '<div class="fn-ev" style="--accent:' + ev.accent + '">' + (i ? '<svg class="fn-split" aria-hidden="true"><use href="#ornament"/></svg>' : "") +
-        (oneDay ? "" : '<span class="fn-day">' + DAYS[ev.day].pill + " · " + DAYS[ev.day].short + "</span>") +
-        '<h2 class="fn-name' + (ev.name.length > 12 ? " long" : "") + '">' + esc(ev.name) + "</h2>" +
-        (ev.sub ? '<p class="fn-sub">' + esc(ev.sub) + "</p>" : "") +
-        '<span class="fn-time">' + esc(perSide(ev.time)) + "</span>" +
-        '<p class="fn-note">' + esc(ev.note) + "</p></div>";
-    }).join("");
-    return '<section class="fn' + (evs.length > 1 ? " two" : "") + (evs[0].name.length > 12 ? " longname" : "") + (n % 2 ? " flip" : "") + '" id="fn-' + pg.id + '">' +
-      '<img class="fn-rose top" src="' + BASE + 'assets/art/roses.webp" alt="" aria-hidden="true" />' +
-      '<img class="fn-rose bot" src="' + BASE + 'assets/art/roses.webp" alt="" aria-hidden="true" />' +
-      '<img class="fn-petal p1" src="' + BASE + 'assets/art/petal1.webp" alt="" aria-hidden="true" />' +
-      '<img class="fn-petal p2" src="' + BASE + 'assets/art/petal2.webp" alt="" aria-hidden="true" />' +
-      '<div class="fn-text reveal"><p class="fn-hi">' + pg.hi + "</p>" + (oneDay ? dayHtml(evs[0].day) : "") +
-      '<img class="fn-art" src="' + BASE + "assets/art/" + pg.art + '.webp" alt="" />' + body + "</div></section>";
+
+  // web: one timeline, grouped by day
+  var lastDay = 0;
+  $("#timeline").innerHTML = TIMELINE[SIDE].map(function (row, n) {
+    var ev = EVENTS[row[0]], head = "";
+    if (ev.day !== lastDay) { lastDay = ev.day; head = '<div class="tl-day reveal"><span class="fn-day">' + DAYS[ev.day].pill + '</span><span class="tl-date">' + DAYS[ev.day].date + "</span></div>"; }
+    var art = row[1] ? '<img src="' + BASE + "assets/art/" + row[1] + '.webp" alt="" loading="lazy" />'
+      : '<div class="tl-seal" aria-hidden="true"><span>' + ev.hi.replace(/॥/g, "").trim().replace(" ", "<br>") + "</span></div>";
+    return head + '<div class="tl-row reveal' + (n % 2 ? " right" : "") + '" id="tl-' + row[0] + '" style="--accent:' + ev.accent + '">' +
+      '<div class="tl-art">' + art + '</div><div class="tl-info">' + (row[1] ? '<p class="tl-hi">' + ev.hi + "</p>" : "") +
+      '<h3 class="tl-name' + (ev.name.length > 12 ? " long" : "") + '">' + esc(ev.name) + "</h3>" +
+      (ev.sub ? '<p class="tl-sub">' + esc(ev.sub) + "</p>" : "") +
+      '<span class="fn-time">' + esc(perSide(ev.time)) + '</span><p class="tl-note">' + esc(ev.note) + "</p></div></div>";
   }).join("");
+
+  // PDF / print: one full page each (built only when printing)
+  function dayHtml(d) { return '<span class="fn-day">' + DAYS[d].pill + '</span><span class="fn-date">' + DAYS[d].date + "</span>"; }
+  function renderPages() {
+    if ($("#pages").firstChild) return;
+    $("#pages").innerHTML = PAGES[SIDE].map(function (pg, n) {
+      var evs = pg.ev.map(function (k) { return EVENTS[k]; });
+      var oneDay = evs.every(function (e) { return e.day === evs[0].day; });
+      var body = evs.map(function (ev, i) {
+        return '<div class="fn-ev" style="--accent:' + ev.accent + '">' + (i ? '<svg class="fn-split" aria-hidden="true"><use href="#ornament"/></svg>' : "") +
+          (oneDay ? "" : '<span class="fn-day">' + DAYS[ev.day].pill + " · " + DAYS[ev.day].short + "</span>") +
+          '<h2 class="fn-name' + (ev.name.length > 12 ? " long" : "") + '">' + esc(ev.name) + "</h2>" +
+          (ev.sub ? '<p class="fn-sub">' + esc(ev.sub) + "</p>" : "") +
+          '<span class="fn-time">' + esc(perSide(ev.time)) + "</span>" +
+          '<p class="fn-note">' + esc(ev.note) + "</p></div>";
+      }).join("");
+      return '<section class="fn' + (evs.length > 1 ? " two" : "") + (evs[0].name.length > 12 ? " longname" : "") + (n % 2 ? " flip" : "") + '" id="fn-' + pg.id + '">' +
+        '<img class="fn-rose top" src="' + BASE + 'assets/art/roses.webp" alt="" aria-hidden="true" />' +
+        '<img class="fn-rose bot" src="' + BASE + 'assets/art/roses.webp" alt="" aria-hidden="true" />' +
+        '<img class="fn-petal p1" src="' + BASE + 'assets/art/petal1.webp" alt="" aria-hidden="true" />' +
+        '<img class="fn-petal p2" src="' + BASE + 'assets/art/petal2.webp" alt="" aria-hidden="true" />' +
+        '<div class="fn-text reveal"><p class="fn-hi">' + pg.hi + "</p>" + (oneDay ? dayHtml(evs[0].day) : "") +
+        '<img class="fn-art" src="' + BASE + "assets/art/" + pg.art + '.webp" alt="" />' + body + "</div></section>";
+    }).join("");
+  }
+  // built up front (hidden on screen) so its images are already loaded if someone prints from the browser
+  renderPages();
 
   /* ---------------- Contacts ---------------- */
   function prettyNum(n) { var d = n.replace(/\D/g, "").slice(-10); return "+91 " + d.slice(0, 5) + " " + d.slice(5); }
@@ -303,6 +329,11 @@
       submit.disabled = false; submit.style.opacity = ""; submit.lastChild.textContent = " Send RSVP";
     });
   });
+
+  /* ---------------- Printing from the browser (e.g. phone Share → Print) gives the same pages as the PDF ---------------- */
+  // the embedded Google map is taken out while printing: Chrome's renderer crashes printing it
+  window.addEventListener("beforeprint", function () { document.documentElement.classList.add("pm"); if (mapEl.firstChild) mapEl.removeChild(mapEl.firstChild); });
+  window.addEventListener("afterprint", function () { if (!PRINT) document.documentElement.classList.remove("pm"); loadMap(); });
 
   /* ---------------- Reveal on scroll + lazy map ---------------- */
   if ("IntersectionObserver" in window) {

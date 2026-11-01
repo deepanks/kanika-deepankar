@@ -360,7 +360,10 @@ html.pm .print-only { display: block; }
 html.pm .reveal { opacity: 1; transform: none; transition: none; }
 html.pm main > section, html.pm .fn { height: 693px; min-height: 0; overflow: hidden; break-after: page; page-break-after: always; }
 html.pm main > section:not(.hero):not(.fn) { display: flex; flex-direction: column; justify-content: center; padding-top: 30px; padding-bottom: 30px; }
-html.pm #events { display: contents; }
+#pages { display: none; }
+html.pm #events { display: none !important; }
+html.pm #pages { display: contents; }
+html.pm body.locked { overflow: visible; height: auto; }
 html.pm .venue-card { margin-top: 14px; }
 html.pm .venue-img { aspect-ratio: 800 / 600; }
 html.pm .venue-name { margin-top: 12px; font-size: 19px; }
@@ -395,3 +398,49 @@ html.relayout .fn-name, html.relayout .fn-note { text-wrap: wrap; }
 .blessing::before, #rsvp::before { top: 0; right: 0; }
 #venue::before, #contact::before { bottom: 0; left: 0; transform: rotate(180deg); }
 #contact::before { bottom: 0; }
+
+/* ================= FUNCTIONS TIMELINE (web) — illustration and details alternate sides ================= */
+.tl-sec {
+  isolation: isolate; padding: 54px 14px 84px;
+  background:
+    radial-gradient(70% 22% at 0% 100%, rgba(244, 194, 202, .5), transparent 70%),
+    radial-gradient(60% 18% at 100% 0%, rgba(246, 204, 210, .45), transparent 70%),
+    radial-gradient(45% 16% at 100% 55%, rgba(248, 220, 224, .4), transparent 70%),
+    radial-gradient(40% 14% at 0% 35%, rgba(250, 226, 228, .45), transparent 70%);
+}
+.tl-sec::before, .tl-sec::after {
+  content: ""; position: absolute; z-index: -1; width: min(36%, 200px); aspect-ratio: 480 / 444; pointer-events: none;
+  background: url("assets/art/roses.webp") center / contain no-repeat; mix-blend-mode: multiply;
+}
+.tl-sec::before { top: 0; right: 0; }
+.tl-sec::after { bottom: 0; left: 0; width: min(28%, 150px); transform: rotate(180deg); }
+.tl { position: relative; margin-top: 10px; }
+.tl::before { /* the thread joining the functions */
+  content: ""; position: absolute; left: 50%; top: 20px; bottom: 40px; width: 1.5px; transform: translateX(-50%); z-index: -1;
+  background: linear-gradient(180deg, transparent, var(--gold-2) 3%, var(--gold-2) 97%, transparent);
+}
+.tl-day { display: flex; flex-direction: column; align-items: center; width: fit-content; margin: 22px auto 6px; padding: 6px 14px 4px; border-radius: 16px; background: var(--ivory); }
+.tl-date { margin-top: 4px; font-style: italic; font-weight: 600; font-size: 17px; color: var(--muted); }
+.tl-row { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; margin: 6px 0 14px; }
+.tl-row::after { /* knot on the thread */
+  content: ""; position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--marigold); box-shadow: 0 0 0 4px var(--ivory);
+}
+.tl-row.right .tl-art { order: 2; }
+.tl-art img { width: 108%; max-width: none; margin: 0 -4%; }
+.tl-seal {
+  width: 74%; aspect-ratio: 1; margin: 10px auto; border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(circle at 45% 40%, #fbe6e6, #f4d2d2); border: 2px solid #e2b2a8; outline: 1px solid rgba(221, 176, 163, .7); outline-offset: 5px;
+}
+.tl-seal span { font-family: var(--f-deva); font-size: 24px; line-height: 1.35; color: var(--maroon); }
+.tl-info { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.tl-hi { font-family: var(--f-deva); font-size: 15px; line-height: 1.3; color: var(--sindoor); }
+.tl-name { font-family: var(--f-script); font-weight: 400; font-size: 40px; line-height: 1.02; color: var(--maroon); margin-top: 2px; -webkit-text-stroke: .5px currentColor; }
+.tl-name.long { font-size: 33px; }
+.tl-sub { font-family: var(--f-display); font-weight: 700; font-size: 10.5px; letter-spacing: .06em; color: var(--gold); margin-top: 4px; line-height: 1.35; }
+.tl-info .fn-time { margin-top: 8px; font-size: 12.5px; padding: 5px 13px; letter-spacing: .1em; }
+.tl-note { margin-top: 7px; font-size: 16.5px; line-height: 1.3; font-weight: 600; color: var(--ink); }
+@media (min-width: 480px) {
+  .tl-name { font-size: 46px; } .tl-name.long { font-size: 38px; }
+  .tl-sub { font-size: 12px; } .tl-note { font-size: 18px; }
+}

@@ -9,10 +9,12 @@
   var CONFIG = {
     rsvpEndpoint: "https://script.google.com/macros/s/AKfycbxcxqdug-dxhjbNFHIW2rXNj6A783n8OZST6gjKdB6LP3eAs5_RBWeFBeu-odE8M2AUFQ/exec",
     weddingStart: "2026-12-10T11:00:00+05:30",
+    receptionStart: "2026-12-11T20:00:00+05:30",
     venueQuery: "Ramaya Motel & Resort, Chandesra, Dewas Road, Ujjain, Madhya Pradesh 456006"
   };
 
-  var SIDE = document.body.getAttribute("data-side") === "groom" ? "groom" : "bride";
+  // bride (/), groom (/groom/) or reception-only (/reception/)
+  var SIDE = ["groom", "reception"].indexOf(document.body.getAttribute("data-side")) > -1 ? document.body.getAttribute("data-side") : "bride";
 
   // one entry per function; time may differ per side
   var EVENTS = {
@@ -30,7 +32,8 @@
   // web: all functions on one timeline, illustration and details alternating sides (art: null = small name seal)
   var TIMELINE = {
     bride: [["tilak", "mehendi"], ["sangeet", "sangeet"], ["haldi", "haldi"], ["reception", "wedding"]],
-    groom: [["tilak", "mehendi"], ["sangeet", "sangeet"], ["haldi", "haldi"], ["baraat", "wedding"]]
+    groom: [["tilak", "mehendi"], ["sangeet", "sangeet"], ["haldi", "haldi"], ["baraat", "wedding"]],
+    reception: [["reception", "wedding"]]
   };
   // PDF / print: one full page per entry, illustration (assets/art) + the functions on it
   var PAGES = {
@@ -45,12 +48,16 @@
       { id: "sangeet", art: "sangeet", hi: "॥ संगीत एवं सगाई ॥", ev: ["sangeet"] },
       { id: "haldi", art: "haldi", hi: "॥ हल्दी ॥", ev: ["haldi"] },
       { id: "reception", art: "wedding", hi: "॥ बारात, जयमाला एवं स्वागत ॥", ev: ["baraat"] }
+    ],
+    reception: [
+      { id: "reception", art: "wedding", hi: "॥ जयमाला एवं स्वागत ॥", ev: ["reception"] }
     ]
   };
   var DAYS = {
     1: { pill: "Day One", date: "Thursday, 10 December 2026", short: "Thu, 10 Dec" },
     2: { pill: "Day Two", date: "Friday, 11 December 2026", short: "Fri, 11 Dec" }
   };
+  if (SIDE === "reception") DAYS[2].pill = "Save the Date";   // reception guests have no "Day One"
 
   var CONTACTS = {
     kf: { who: "Pankaj Bhatia", accent: "#c4687e", nums: ["+919479873683"] },
@@ -61,7 +68,8 @@
 
   var SIDES = {
     bride: { label: "Bride side", couple: "Kanika & Deepankar", contacts: ["kf", "ku", "df", "db"] },
-    groom: { label: "Groom side", couple: "Deepankar & Kanika", contacts: ["df", "db", "kf", "ku"] }
+    groom: { label: "Groom side", couple: "Deepankar & Kanika", contacts: ["df", "db", "kf", "ku"] },
+    reception: { label: "Reception", couple: "Kanika & Deepankar", contacts: ["kf", "ku", "df", "db"] }
   };
   var S = SIDES[SIDE];
 
@@ -161,7 +169,7 @@
   for (var i = 0; i < 8; i++) spawnPetal({ delay: 12 });
 
   /* ---------------- Countdown ---------------- */
-  var target = new Date(CONFIG.weddingStart).getTime();
+  var target = new Date(SIDE === "reception" ? CONFIG.receptionStart : CONFIG.weddingStart).getTime();
   var cdEls = {}; $$("[data-cd]").forEach(function (el) { cdEls[el.getAttribute("data-cd")] = el; });
   function pad(n) { return n < 10 ? "0" + n : "" + n; }
   function tick() {
@@ -182,6 +190,7 @@
 
   // web: one timeline, grouped by day
   var lastDay = 0;
+  if (TIMELINE[SIDE].length === 1) $("#timeline").classList.add("single");
   $("#timeline").innerHTML = TIMELINE[SIDE].map(function (row, n) {
     var ev = EVENTS[row[0]], head = "";
     if (ev.day !== lastDay) { lastDay = ev.day; head = '<div class="tl-day reveal"><span class="fn-day">' + DAYS[ev.day].pill + '</span><span class="tl-date">' + DAYS[ev.day].date + "</span></div>"; }

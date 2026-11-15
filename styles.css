@@ -449,3 +449,12 @@ html.relayout .fn-name, html.relayout .fn-note { text-wrap: wrap; }
   .tl-name { font-size: 46px; } .tl-name.long { font-size: 38px; }
   .tl-sub { font-size: 12px; } .tl-note { font-size: 18px; }
 }
+/* reception-only link: one function, picture on top and the details below it */
+.tl.single::before, .tl.single .tl-row::after { display: none; }
+.tl.single .tl-row { grid-template-columns: 1fr; gap: 6px; margin: 14px 0 10px; }
+.tl.single .tl-row .tl-art { order: 0; }
+.tl.single .tl-art img { width: min(86%, 360px); margin: 0 auto; }
+.tl.single .tl-hi { font-size: 18px; }
+.tl.single .tl-name, .tl.single .tl-name.long { font-size: 50px; }
+.tl.single .tl-info .fn-time { font-size: 14px; padding: 6px 18px; margin-top: 10px; }
+.tl.single .tl-note { font-size: 19px; max-width: 320px; }

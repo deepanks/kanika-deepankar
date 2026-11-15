@@ -141,7 +141,7 @@ section { position: relative; padding: 60px 20px; text-align: center; }
 .person .n { display: block; font-family: var(--f-script); font-size: clamp(44px, calc(7 * var(--vh)), 66px); line-height: 1; color: var(--leaf); font-weight: 400; }
 .lineage { font-family: var(--f-serif); font-weight: 600; font-size: clamp(13.5px, calc(2.05 * var(--vh)), 16px); line-height: 1.26; color: var(--muted); margin-top: 2px; text-wrap: balance; }
 .lineage span { display: block; }
-.names .amp { display: block; font-family: var(--f-script); font-size: clamp(32px, calc(4.8 * var(--vh)), 42px); color: var(--marigold); line-height: 1; margin: clamp(2px, calc(.8 * var(--vh)), 8px) 0 clamp(0px, calc(.3 * var(--vh)), 4px); }
+.names .amp { display: block; font-family: var(--f-script); font-size: clamp(32px, calc(4.8 * var(--vh)), 42px); color: var(--marigold); line-height: 1; margin: clamp(10px, calc(1.6 * var(--vh)), 16px) 0 clamp(4px, calc(.8 * var(--vh)), 8px); }
 .arch .divider { margin: clamp(6px, calc(1.4 * var(--vh)), 14px) auto clamp(4px, calc(1 * var(--vh)), 10px); width: 180px; height: 20px; }
 .hero-days { font-size: clamp(15px, calc(2.2 * var(--vh)), 17px); font-style: italic; color: var(--muted); line-height: 1.2; }
 .hero-date { font-family: var(--f-display); font-weight: 600; color: var(--maroon); font-size: clamp(17px, calc(2.8 * var(--vh)), 22px); letter-spacing: .1em; line-height: 1.3; }

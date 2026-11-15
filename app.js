@@ -61,7 +61,7 @@
 
   var SIDES = {
     bride: { label: "Bride side", couple: "Kanika & Deepankar", contacts: ["kf", "ku", "df", "db"] },
-    groom: { label: "Groom side", couple: "Kanika & Deepankar", contacts: ["kf", "ku", "df", "db"] }
+    groom: { label: "Groom side", couple: "Deepankar & Kanika", contacts: ["df", "db", "kf", "ku"] }
   };
   var S = SIDES[SIDE];
 

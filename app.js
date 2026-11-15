@@ -52,10 +52,10 @@
   };
 
   var CONTACTS = {
-    kf: { who: "Kanika's Father", accent: "#c4687e", nums: ["+919479873683"] },
-    ku: { who: "Kanika's Uncle", accent: "#c4687e", nums: ["+919644455666"] },
-    df: { who: "Deepankar's Father", accent: "#c98576", nums: ["+918744045556"] },
-    db: { who: "Deepankar's Brother", accent: "#c98576", nums: ["+918744865556"] }
+    kf: { who: "Pankaj Bhatia", accent: "#c4687e", nums: ["+919479873683"] },
+    ku: { who: "Shailesh Bhatia", accent: "#c4687e", nums: ["+919644455666"] },
+    df: { who: "Amar Kumar Srivastava ", accent: "#c98576", nums: ["+918744045556"] },
+    db: { who: "Shubhankar Srivastava", accent: "#c98576", nums: ["+918744865556"] }
   };
 
   var SIDES = {

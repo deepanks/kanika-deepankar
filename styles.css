@@ -421,7 +421,7 @@ html.relayout .fn-name, html.relayout .fn-note { text-wrap: wrap; }
 }
 .tl-day { display: flex; flex-direction: column; align-items: center; width: fit-content; margin: 22px auto 6px; padding: 6px 14px 4px; border-radius: 16px; background: var(--ivory); }
 .tl-date { margin-top: 4px; font-style: italic; font-weight: 600; font-size: 17px; color: var(--muted); }
-.tl-row { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; margin: 18px 0 30px; }
+.tl-row { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; margin: 25px 0 30px; }
 .tl-row::after { /* knot on the thread */
   content: ""; position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; transform: translate(-50%, -50%) rotate(45deg);
   background: var(--marigold); box-shadow: 0 0 0 4px var(--ivory);

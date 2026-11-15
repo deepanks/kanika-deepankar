@@ -21,15 +21,16 @@
     sangeet: { day: 1, hi: "॥ संगीत एवं सगाई ॥", name: "Sangeet & Ring Ceremony", sub: "Followed by Cocktail", time: "7:00 PM", accent: "#4f7fa6",
       note: "An evening of music, dance and the exchange of rings, then raise a glass with us." },
     haldi: { day: 2, hi: "॥ हल्दी ॥", name: "Haldi", time: "10:00 AM", accent: "#c08a0c", note: "Turmeric, laughter and a splash of sunshine." },
-    matri: { day: 2, hi: "॥ मातृ पूजा ॥", name: "Matri Pooja", time: "2:00 PM", accent: "#a8455a", note: "Seeking the blessings of the divine mothers and our ancestors." },
-    baraat: { day: 2, hi: "॥ बारात ॥", name: "Baraat", time: "8:00 PM", accent: "#b0354f", note: "The groom's grand procession. Come dance along to the dhol!" },
-    reception: { day: 2, hi: "॥ जयमाला एवं स्वागत ॥", name: "Jaimala & Reception", time: { bride: "8:00 PM onwards", groom: "To follow" }, accent: "#b0354f",
-      note: "The exchange of garlands, followed by the reception." }
+    reception: { day: 2, hi: "॥ जयमाला एवं स्वागत ॥", name: "Jaimala & Reception", time: "8:00 PM onwards", accent: "#b0354f",
+      note: "The exchange of garlands, followed by the reception." },
+    // groom side: the baraat arrives, then the jaimala & reception, shown together
+    baraat: { day: 2, hi: "॥ बारात, जयमाला एवं स्वागत ॥", name: "Baraat, Jaimala & Reception", time: "8:00 PM onwards", accent: "#b0354f",
+      note: "The groom's grand procession, followed by the exchange of garlands and the reception." }
   };
   // web: all functions on one timeline, illustration and details alternating sides (art: null = small name seal)
   var TIMELINE = {
     bride: [["tilak", "mehendi"], ["sangeet", "sangeet"], ["haldi", "haldi"], ["reception", "wedding"]],
-    groom: [["tilak", "mehendi"], ["sangeet", "sangeet"], ["haldi", "haldi"], ["matri", null], ["baraat", null], ["reception", "wedding"]]
+    groom: [["tilak", "mehendi"], ["sangeet", "sangeet"], ["haldi", "haldi"], ["baraat", "wedding"]]
   };
   // PDF / print: one full page per entry, illustration (assets/art) + the functions on it
   var PAGES = {
@@ -40,10 +41,10 @@
       { id: "reception", art: "wedding", hi: "॥ जयमाला एवं स्वागत ॥", ev: ["reception"] }
     ],
     groom: [
-      { id: "tilak", art: "mehendi", hi: "॥ तिलक एवं मातृ पूजा ॥", ev: ["tilak", "matri"] },
+      { id: "tilak", art: "mehendi", hi: "॥ तिलक ॥", ev: ["tilak"] },
       { id: "sangeet", art: "sangeet", hi: "॥ संगीत एवं सगाई ॥", ev: ["sangeet"] },
       { id: "haldi", art: "haldi", hi: "॥ हल्दी ॥", ev: ["haldi"] },
-      { id: "reception", art: "wedding", hi: "॥ बारात एवं जयमाला ॥", ev: ["baraat", "reception"] }
+      { id: "reception", art: "wedding", hi: "॥ बारात, जयमाला एवं स्वागत ॥", ev: ["baraat"] }
     ]
   };
   var DAYS = {
@@ -54,13 +55,13 @@
   var CONTACTS = {
     kf: { who: "Pankaj Bhatia", accent: "#c4687e", nums: ["+919479873683"] },
     ku: { who: "Shailesh Bhatia", accent: "#c4687e", nums: ["+919644455666"] },
-    df: { who: "Amar Kumar Srivastava ", accent: "#c98576", nums: ["+918744045556"] },
+    df: { who: "Amar Kumar Srivastava", accent: "#c98576", nums: ["+918744045556"] },
     db: { who: "Shubhankar Srivastava", accent: "#c98576", nums: ["+918744865556"] }
   };
 
   var SIDES = {
     bride: { label: "Bride side", couple: "Kanika & Deepankar", contacts: ["kf", "ku", "df", "db"] },
-    groom: { label: "Groom side", couple: "Deepankar & Kanika", contacts: ["df", "db", "kf", "ku"] }
+    groom: { label: "Groom side", couple: "Kanika & Deepankar", contacts: ["kf", "ku", "df", "db"] }
   };
   var S = SIDES[SIDE];
 

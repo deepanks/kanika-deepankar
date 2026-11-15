@@ -286,7 +286,7 @@ footer .tiny { margin-top: 18px; font-family: var(--f-display); font-weight: 600
   .cap-text { font-size: 13.5px; line-height: 1.45; }
   .arch .invite { font-size: 15.5px; }
   .person .n { font-size: 40px; }
-  .names .amp { font-size: 28px; margin: 0; }
+  .names .amp { font-size: 28px; margin: 8px 0 2px; }
   .lineage { font-size: 12.5px; line-height: 1.22; }
   .hero-days { display: none; }
   .arch .divider { margin: 4px auto 2px; height: 16px; }
